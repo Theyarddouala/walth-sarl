@@ -921,12 +921,12 @@ const SA = {
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore,collection,collectionGroup,doc,getDoc,getDocs,addDoc,updateDoc,query,where,orderBy,serverTimestamp,setDoc,runTransaction,Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
-import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js";
 const app = initializeApp(FC);
 const db = getFirestore(app);
 const storage = getStorage(app);
 let messaging = null;
-try { messaging = getMessaging(app); } catch(e) { console.log('FCM non disponible:', e); }
+// FCM disabled for GitHub Pages - re-enable when on supported host
+// try { messaging = getMessaging(app); } catch(e) { console.log('FCM non disponible:', e); }
 
 const DP = {accounting_pin:"1234",manager_pin:"5678",admin_pin:"9999"};
 window._du = {accounting:false,manager:false,admin:false,rapports:false};
@@ -1034,8 +1034,8 @@ async function sendPushToRole(role, title, body, data) {
 }
 
 function initNotifications() {
+  if(!messaging) return; // FCM not available
   if(Notification && Notification.permission === 'granted') return;
-  if(!messaging) return;
   setTimeout(function(){
     var m = document.getElementById('notif-modal');
     m.style.display = 'flex';
@@ -2789,21 +2789,10 @@ document.querySelectorAll('.modal-overlay').forEach(function(el){
   el.addEventListener('click',function(e){if(e.target===el) el.classList.remove('open');});
 });
 </script>
-<!-- PWA SERVICE WORKER -->
+<!-- PWA SERVICE WORKER - Disabled temporarily -->
 <script>
-if('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(function(regs) {
-    return Promise.all(regs.map(function(r) { return r.unregister(); }));
-  }).then(function() {
-    // Works on both root domains and subfolder deployments (GitHub Pages)
-    var swPath = (location.pathname.replace(/\/[^\/]*$/, '') || '') + '/firebase-messaging-sw.js';
-    return navigator.serviceWorker.register(swPath);
-  }).then(function(reg) {
-    console.log('SW enregistré:', reg.scope);
-  }).catch(function(err) {
-    console.log('SW erreur:', err);
-  });
-}
+// Service worker disabled - notifications configured separately
+console.log('WALTH SARL app loaded');
 </script>
 </body>
 </html>
