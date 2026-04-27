@@ -941,7 +941,7 @@ async function init() {
 }
 init();
 
-// ── FCM & NOTIFICATIONS ────────────────────────────────────
+//  FCM & NOTIFICATIONS 
 function dismissNotifModal() {
   var m = document.getElementById('notif-modal');
   m.classList.remove('open');
@@ -962,7 +962,7 @@ async function requestNotifPermission() {
         await setDoc(doc(db,'fcmTokens',token), {token:token, role:role, updatedAt:serverTimestamp()});
         localStorage.setItem('fcm_token', token);
         localStorage.setItem('fcm_role', role);
-        showToast('Notifications activées ✓');
+        showToast('Notifications activées OK');
         onMessage(messaging, function(payload) {
           var n = payload.notification || {};
           showToast((n.title||'') + (n.body ? ' — '+n.body : ''));
@@ -991,7 +991,7 @@ function initNotifications() {
 }
 window.requestNotifPermission = requestNotifPermission;
 window.dismissNotifModal = dismissNotifModal;
-// ── FIREBASE STORAGE UPLOAD ────────────────────────────────
+//  FIREBASE STORAGE UPLOAD 
 async function uploadFilesToStorage(files, path) {
   var uploaded = [];
   for(var i=0; i<files.length; i++) {
@@ -1005,7 +1005,7 @@ async function uploadFilesToStorage(files, path) {
   }
   return uploaded;
 }
-// ────────────────────────────────────────────────────────────
+// 
 async function addAuditLog(requestId, action, personName, extra) {
   try {
     var entry = {
@@ -1052,7 +1052,7 @@ function auditActionLabel(action) {
 
 function renderAuditLog(entries) {
   if(!entries || !entries.length) return '';
-  var html = '<div class="audit-log"><div class="audit-log-title">📋 Historique des actions</div>';
+  var html = '<div class="audit-log"><div class="audit-log-title"> Historique des actions</div>';
   entries.forEach(function(e){
     var info = auditActionLabel(e.action);
     html += '<div class="audit-entry">';
@@ -1065,8 +1065,8 @@ function renderAuditLog(entries) {
   html += '</div>';
   return html;
 }
-// ────────────────────────────────────────────────────────────
-// ── WHATSAPP NUMBERS ───────────────────────────────────────
+// 
+//  WHATSAPP NUMBERS 
 let _waNumbers = {accounting:[], manager:[]};
 
 async function loadWaNumbers() {
@@ -1091,7 +1091,7 @@ function renderWaNumbersList(role) {
   el.innerHTML = list.map(function(num,i){
     return '<div class="settings-row" style="padding:8px 0">'+
       '<div style="font-family:var(--mono);font-size:13px;color:var(--text)">'+esc(num)+'</div>'+
-      '<button class="btn-rr" onclick="removeWaNumber(\''+role+'\','+i+')" style="font-size:13px">✕</button>'+
+      '<button class="btn-rr" onclick="removeWaNumber(\''+role+'\','+i+')" style="font-size:13px"></button>'+
       '</div>';
   }).join('');
 }
@@ -1106,7 +1106,7 @@ window.addWhatsappNumber = async function(role) {
   await saveWaNumbers();
   document.getElementById('whatsapp-'+role+'-num').value='';
   renderWaNumbersList(role);
-  showToast('Numéro ajouté ✓');
+  showToast('Numéro ajouté OK');
 };
 
 window.removeWaNumber = async function(role, idx) {
@@ -1119,7 +1119,7 @@ window.removeWaNumber = async function(role, idx) {
 // Helper to get all director numbers (for notifications)
 function getManagerWaNumbers() { return _waNumbers.manager||[]; }
 function getAccountingWaNumbers() { return _waNumbers.accounting||[]; }
-// ────────────────────────────────────────────────────────────
+// 
 let _approvers = {accounting:[], manager:[]};
 
 async function loadApprovers() {
@@ -1145,10 +1145,10 @@ function renderApproversList(role) {
     return '<div class="settings-row" style="padding:10px 0">'+
       '<div style="flex:1">'+
         '<div style="font-size:13px;color:var(--text);font-weight:500">'+esc(name)+'</div>'+
-        (phone?'<div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:2px">📱 '+esc(phone)+'</div>':
+        (phone?'<div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:2px"> '+esc(phone)+'</div>':
                '<div style="font-size:11px;color:var(--muted);margin-top:2px">Pas de numéro</div>')+
       '</div>'+
-      '<button class="btn-rr" onclick="removeApprover(\''+role+'\','+i+')" style="font-size:13px">✕</button>'+
+      '<button class="btn-rr" onclick="removeApprover(\''+role+'\','+i+')" style="font-size:13px"></button>'+
       '</div>';
   }).join('');
 }
@@ -1167,7 +1167,7 @@ window.addApprover = async function(role) {
   document.getElementById('new-approver-'+role).value='';
   document.getElementById('new-approver-'+role+'-phone').value='';
   renderApproversList(role);
-  showToast('Ajouté ✓');
+  showToast('Ajouté OK');
 };
 
 window.removeApprover = async function(role, idx) {
@@ -1196,7 +1196,7 @@ function populateApproverDropdown(selectId, role) {
   // If no approvers configured, auto-select "Autre" so user can type their name
   if(!list.length) sel.value = '__autre__';
 }
-// ────────────────────────────────────────────────────────────
+// 
 
 window.toggleUrgent=function(cb){
   var warn=document.getElementById('urgent-warning');
@@ -1204,7 +1204,7 @@ window.toggleUrgent=function(cb){
   if(cb.checked){
     warn.style.display='block';
     btn.style.background='var(--red)';
-    btn.textContent='🚨 Soumettre la Fiche URGENTE';
+    btn.textContent='URGENT - Soumettre la Fiche URGENTE';
   } else {
     warn.style.display='none';
     btn.style.background='';
@@ -1290,7 +1290,7 @@ function renderPrev(cid,fa,fn){
     var sz=f.size<1048576?Math.round(f.size/1024)+' KB':(f.size/1048576).toFixed(1)+' MB';
     var tid=cid+'t'+i;
     var el=document.createElement('div');el.className='fp-item';
-    el.innerHTML=(isImg?'<img class="fp-thumb" id="'+tid+'" src="">':'<span class="fp-icon">📄</span>')+
+    el.innerHTML=(isImg?'<img class="fp-thumb" id="'+tid+'" src="">':'<span class="fp-icon"></span>')+
       '<div class="fp-info"><div class="fp-name">'+esc(f.name)+'</div><div class="fp-size">'+sz+'</div></div>'+
       '<button class="btn-rf" onclick="'+fn+'('+i+')">x</button>';
     l.appendChild(el);
@@ -1341,14 +1341,14 @@ window.submitRequest=async function(){
     await addAuditLog(docRef.id, 'soumis', nm, isUrgent?'URGENT':null);
     // Notify accounting
     sendPushToRole('accounting',
-      (isUrgent?'🚨 URGENT — ':'📋 ')+'Nouvelle fiche de décaissement',
+      (isUrgent?'URGENT - URGENT — ':' ')+'Nouvelle fiche de décaissement',
       nm+' — '+fmtF(tc),
       {type:'new_request', code:code}
     );
     // If urgent, notify manager directly too
     if(isUrgent){
       sendPushToRole('manager',
-        '🚨 FICHE URGENTE — Action immédiate requise',
+        'URGENT - FICHE URGENTE — Action immédiate requise',
         nm+' — '+esc(cat)+' — '+fmtF(tc),
         {type:'urgent_request', code:code}
       );
@@ -1360,7 +1360,7 @@ window.submitRequest=async function(){
       document.getElementById('submit-success-view').querySelector('.success-box').style.borderColor='var(--red)';
       document.getElementById('submit-success-view').querySelector('.success-box').style.background='#fff8f8';
     }
-  }catch(e){showToast('Erreur lors de la soumission.');console.error(e);btn.disabled=false;btn.innerHTML=isUrgent?'🚨 Soumettre la Fiche URGENTE':'Soumettre la Fiche';}
+  }catch(e){showToast('Erreur lors de la soumission.');console.error(e);btn.disabled=false;btn.innerHTML=isUrgent?'URGENT - Soumettre la Fiche URGENTE':'Soumettre la Fiche';}
 };
 window.resetSubmitForm=function(){
   document.getElementById('req-name').value='';document.getElementById('req-category').value='';document.getElementById('req-desc').value='';
@@ -1411,7 +1411,7 @@ async function loadA(){
     urgent.sort(sortFn);normal.sort(sortFn);
     if(urgent.length){
       var ub=document.createElement('div');
-      ub.innerHTML='<div style="font-family:var(--mono);font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">🚨 Fiches urgentes ('+urgent.length+')</div>';
+      ub.innerHTML='<div style="font-family:var(--mono);font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">URGENT - Fiches urgentes ('+urgent.length+')</div>';
       el.appendChild(ub);
       urgent.forEach(function(d){renderCard(el,d.id,d.data,'accounting');});
       var sep=document.createElement('div');sep.style.cssText='border-top:1px solid var(--border);margin:12px 0 16px';el.appendChild(sep);
@@ -1438,7 +1438,7 @@ async function loadM(){
     if(!urgent.length&&!normal.length){el.innerHTML='<div class="empty-state">Aucune demande en attente</div>';return;}
     if(urgent.length){
       var ub=document.createElement('div');
-      ub.innerHTML='<div style="font-family:var(--mono);font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">🚨 Fiches urgentes — Approbation directe ('+urgent.length+')</div>';
+      ub.innerHTML='<div style="font-family:var(--mono);font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">URGENT - Fiches urgentes — Approbation directe ('+urgent.length+')</div>';
       el.appendChild(ub);
       urgent.forEach(function(d){renderCard(el,d.id,d.data,'manager');});
       if(normal.length){var sep=document.createElement('div');sep.style.cssText='border-top:1px solid var(--border);margin:12px 0 16px';el.appendChild(sep);}
@@ -1461,7 +1461,7 @@ async function loadAd(){
           (d.data.status==='manager_approved'||d.data.status==='receipt_uploaded') &&
           !d.data.cahierPhysique;
       });
-      if(!docs.length){el.innerHTML='<div class="empty-state">✓ Toutes les fiches CASH sont enregistrées dans le cahier</div>';return;}
+      if(!docs.length){el.innerHTML='<div class="empty-state">OK Toutes les fiches CASH sont enregistrées dans le cahier</div>';return;}
       el.innerHTML='';docs.forEach(function(d){renderCard(el,d.id,d.data,'admin');});
     } else if(f==='all'||f==='rejected'){
       s=await getDocs(query(collection(db,"requests"),orderBy("submittedAt","desc")));
@@ -1525,7 +1525,7 @@ window.loadMgrCahier=async function(){
         !data.cahierPhysique) fiches.push({id:d.id,data:data});
     });
     if(!fiches.length){
-      el.innerHTML='<div class="empty-state">✓ Toutes les fiches CASH sont enregistrées dans le cahier</div>';
+      el.innerHTML='<div class="empty-state">OK Toutes les fiches CASH sont enregistrées dans le cahier</div>';
       return;
     }
     el.innerHTML='';
@@ -1540,7 +1540,7 @@ window.loadMgrCahier=async function(){
         '<div style="font-size:12px;color:var(--amber);margin-top:4px">'+esc(data.category||'')+'</div>'+
         '<div style="font-family:var(--mono);font-size:14px;font-weight:500;margin-top:4px">'+fmtF(data.estimatedCost||0)+' <span class="pbadge">CASH</span></div>'+
         '</div>'+
-        '<button class="btn btn-a" style="padding:8px 12px;font-size:12px;min-height:0;white-space:nowrap" onclick="markMgrCahier(\''+f.id+'\',this)">📒 Signer</button>'+
+        '<button class="btn btn-a" style="padding:8px 12px;font-size:12px;min-height:0;white-space:nowrap" onclick="markMgrCahier(\''+f.id+'\',this)"> Signer</button>'+
         '</div>';
       el.appendChild(card);
     });
@@ -1555,15 +1555,15 @@ window.markMgrCahier=async function(did, btn){
       cahierPhysiqueAt:serverTimestamp()
     });
     await addAuditLog(did,'cahier_physique','Directeur','Signé dans le cahier physique');
-    showToast('✓ Signé dans le cahier');
+    showToast('OK Signé dans le cahier');
     btn.closest('.card').style.opacity='0.4';
-    btn.innerHTML='✓ Signé';
+    btn.innerHTML='OK Signé';
     // Refresh reminder
     loadMgrCahierReminder();
-  }catch(e){showToast('Erreur');btn.disabled=false;btn.innerHTML='📒 Signer';console.error(e);}
+  }catch(e){showToast('Erreur');btn.disabled=false;btn.innerHTML=' Signer';console.error(e);}
 };
 
-// ── SPLIT PAYMENT ─────────────────────────────────────────
+//  SPLIT PAYMENT 
 window.onPaymentMethodChange = function(sel) {
   var splitSection = document.getElementById('split-payment-section');
   if(sel.value === 'SPLIT') {
@@ -1616,9 +1616,9 @@ function getSplitPaymentData() {
 function getSplitPaymentLabel(splits) {
   return splits.map(function(s){ return s.method+' '+fmtF(s.amount); }).join(' + ');
 }
-// ────────────────────────────────────────────────────────────
+// 
 
-// ── NOTES DE FRAIS ─────────────────────────────────────────
+//  NOTES DE FRAIS 
 let _nf = [];
 
 async function genNdfCode(){
@@ -1682,7 +1682,7 @@ window.submitNote = async function() {
       reimbursementMethod:null, reimbursementAt:null
     });
     // Notify accounting
-    sendPushToRole('accounting','📝 Nouvelle note de frais',name+' — '+fmtF(amount),{type:'ndf',code:code});
+    sendPushToRole('accounting',' Nouvelle note de frais',name+' — '+fmtF(amount),{type:'ndf',code:code});
     document.getElementById('note-success-code').textContent = code;
     document.getElementById('notes-form-view').style.display='none';
     document.getElementById('notes-success-view').style.display='block';
@@ -1717,7 +1717,7 @@ async function loadRecentNotes() {
       var data = d.data();
       var ds = data.submittedAt ? fmtD(data.submittedAt.toDate()) : data.expenseDate||'—';
       var statusColors = {pending:'#888',accounting_approved:'var(--amber)',manager_approved:'var(--green)',accounting_rejected:'var(--red)',manager_rejected:'var(--red)'};
-      var statusLabels = {pending:'En attente',accounting_approved:'Approuvé Compta.',manager_approved:'✓ Remboursement approuvé',accounting_rejected:'Rejeté Compta.',manager_rejected:'Rejeté Directeur'};
+      var statusLabels = {pending:'En attente',accounting_approved:'Approuvé Compta.',manager_approved:'OK Remboursement approuvé',accounting_rejected:'Rejeté Compta.',manager_rejected:'Rejeté Directeur'};
       var div = document.createElement('div');
       div.className='card';div.style.marginBottom='8px';
       div.innerHTML=
@@ -1756,7 +1756,7 @@ function renderNdfCard(container, did, data, role) {
   card.innerHTML=
     '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:8px">'+
     '<div>'+
-      '<div style="font-size:10px;font-family:var(--mono);color:#8e44ad;margin-bottom:2px">📝 NOTE DE FRAIS · '+esc(data.code||'')+'</div>'+
+      '<div style="font-size:10px;font-family:var(--mono);color:#8e44ad;margin-bottom:2px"> NOTE DE FRAIS · '+esc(data.code||'')+'</div>'+
       '<div style="font-size:13px;font-weight:600">'+esc(data.requesterName)+'</div>'+
       '<div style="font-size:11px;color:var(--muted);margin-top:2px">'+esc(data.category)+' · '+ds+'</div>'+
     '</div>'+
@@ -1766,10 +1766,10 @@ function renderNdfCard(container, did, data, role) {
     '</div></div>'+
     (data.description?'<div style="font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.4">'+esc(data.description)+'</div>':'')+
     (data.expenseDate?'<div style="font-size:11px;color:var(--muted)">Date dépense : '+esc(data.expenseDate)+'</div>':'')+
-    (data.whatsappPhone?'<div style="font-size:11px;color:var(--muted);font-family:var(--mono)">📱 '+esc(data.whatsappPhone)+'</div>':'')+
+    (data.whatsappPhone?'<div style="font-size:11px;color:var(--muted);font-family:var(--mono)"> '+esc(data.whatsappPhone)+'</div>':'')+
     (data.accounting_rejectionReason?'<div class="rej-block" style="margin-top:8px">Rejeté compta. : '+esc(data.accounting_rejectionReason)+'</div>':'')+
     (data.manager_rejectionReason?'<div class="rej-block" style="margin-top:8px">Rejeté directeur : '+esc(data.manager_rejectionReason)+'</div>':'')+
-    (data.status==='manager_approved'?'<div class="app-block" style="margin-top:8px">✓ Remboursement approuvé par <strong>'+esc(data.manager_approver||'')+'</strong></div>':'')+
+    (data.status==='manager_approved'?'<div class="app-block" style="margin-top:8px">OK Remboursement approuvé par <strong>'+esc(data.manager_approver||'')+'</strong></div>':'')+
     ac;
   container.appendChild(card);
 }
@@ -1782,9 +1782,9 @@ window.approveNdf = async function(did, role) {
       ? {status:'accounting_approved',accounting_approver:name,accounting_approvedAt:serverTimestamp()}
       : {status:'manager_approved',manager_approver:name,manager_approvedAt:serverTimestamp()};
     await updateDoc(doc(db,'notesDefrais',did),up);
-    showToast('Note de frais approuvée ✓');
+    showToast('Note de frais approuvée OK');
     if(role==='accounting'){
-      sendPushToRole('manager','📝 Note de frais à approuver','Remboursement en attente de validation',{type:'ndf_accounting_approved'});
+      sendPushToRole('manager',' Note de frais à approuver','Remboursement en attente de validation',{type:'ndf_accounting_approved'});
     }
     loadA(); loadM();
   } catch(e){ showToast('Erreur'); console.error(e); }
@@ -1815,14 +1815,14 @@ async function loadNdfForRole(listElId, role) {
     var docs=[];s.forEach(function(d){docs.push({id:d.id,data:d.data()});});
     docs.sort(function(a,b){var ta=a.data.submittedAt?a.data.submittedAt.toDate().getTime():0;var tb=b.data.submittedAt?b.data.submittedAt.toDate().getTime():0;return tb-ta;});
     if(!docs.length){if(hdr)hdr.textContent='';return;}
-    if(hdr) hdr.textContent='📝 Notes de Frais en attente ('+docs.length+')';
+    if(hdr) hdr.textContent=' Notes de Frais en attente ('+docs.length+')';
     docs.forEach(function(d){ renderNdfCard(el,d.id,d.data,role); });
   } catch(e){ console.error(e); }
 }
-// ────────────────────────────────────────────────────────────
-// ────────────────────────────────────────────────────────────
+// 
+// 
 
-// ── DÉCAISSEMENT SUPPLÉMENTAIRE ────────────────────────────
+//  DÉCAISSEMENT SUPPLÉMENTAIRE 
 window.openDecaissModal = function(did, code, requesterName, estimatedCost) {
   document.getElementById('decaiss-doc-id').value = did;
   document.getElementById('decaiss-amount').value = '';
@@ -1854,14 +1854,14 @@ window.confirmDecaiss = async function() {
     });
     await addAuditLog(did,'decaiss_supplementaire','Admin','Montant supplémentaire : '+fmtF(amount)+' — '+reason);
     closeModal('decaiss-modal');
-    showToast('Décaissement supplémentaire enregistré ✓');
+    showToast('Décaissement supplémentaire enregistré OK');
     loadAd();
   } catch(e) { showToast('Erreur'); console.error(e); }
   btn.disabled=false; btn.innerHTML='Valider le Décaissement';
 };
-// ────────────────────────────────────────────────────────────
+// 
 
-// ── ADMIN NDF ──────────────────────────────────────────────
+//  ADMIN NDF 
 let _adminNdfFilter = 'all';
 let _adminNdf = [];
 
@@ -1895,9 +1895,9 @@ function renderAdminNdfList() {
   el.innerHTML = '';
   filtered.forEach(function(r){ renderNdfCard(el, r.id, r, 'admin'); });
 }
-// ────────────────────────────────────────────────────────────
+// 
 
-// ── CAHIER CALENDAR ────────────────────────────────────────
+//  CAHIER CALENDAR 
 let _cahierHistory = [];
 let _cahierCalDate = new Date();
 let _cahierCalSelected = null;
@@ -1989,7 +1989,7 @@ window.cahierCalSelect = function(d,m,y) {
 };
 window.cahierCalPrev = function(){ _cahierCalDate.setMonth(_cahierCalDate.getMonth()-1); _cahierCalSelected=null; renderCahierCalendar(); };
 window.cahierCalNext = function(){ _cahierCalDate.setMonth(_cahierCalDate.getMonth()+1); _cahierCalSelected=null; renderCahierCalendar(); };
-// ────────────────────────────────────────────────────────────
+// 
 let _mgrHistory = [];
 let _mgrHistoryFilter = '7';
 let _mgrCalDate = new Date();
@@ -2052,7 +2052,7 @@ function renderMgrHistoryList() {
     var card = document.createElement('div');
     card.className = 'card' + (r.urgent?' urgent-card':'');
     card.innerHTML =
-      (r.urgent?'<div class="urgent-header">🚨 URGENT</div>':'')+
+      (r.urgent?'<div class="urgent-header">URGENT - URGENT</div>':'')+
       '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">'+
         '<div>'+
           '<div style="font-size:13px;font-weight:600">'+esc(r.requesterName)+'</div>'+
@@ -2065,7 +2065,7 @@ function renderMgrHistoryList() {
           (r.accounting_paymentMethod?'<div style="margin-top:4px"><span class="pbadge">'+r.accounting_paymentMethod+'</span></div>':'')+
         '</div>'+
       '</div>'+
-      (r.manager_approver?'<div style="font-size:12px;color:var(--green);margin-top:8px">✓ Approuvé par '+esc(r.manager_approver)+'</div>':'')+
+      (r.manager_approver?'<div style="font-size:12px;color:var(--green);margin-top:8px">OK Approuvé par '+esc(r.manager_approver)+'</div>':'')+
       (r.description?'<div style="font-size:12px;color:var(--muted);margin-top:6px;line-height:1.4">'+esc(r.description)+'</div>':'');
     el.appendChild(card);
   });
@@ -2123,7 +2123,7 @@ window.mgrCalSelect = function(d,m,y) {
 };
 window.mgrCalPrev = function() { _mgrCalDate.setMonth(_mgrCalDate.getMonth()-1); _mgrCalSelected=null; renderMgrCalendar(); renderMgrHistoryList(); };
 window.mgrCalNext = function() { _mgrCalDate.setMonth(_mgrCalDate.getMonth()+1); _mgrCalSelected=null; renderMgrCalendar(); renderMgrHistoryList(); };
-// ────────────────────────────────────────────────────────────
+// 
 window.switchAdminTab=function(tid,b){
   document.querySelectorAll('#admin-dash-view .tab-content').forEach(function(t){t.classList.remove('active');});
   document.querySelectorAll('#admin-dash-view .tab-btn').forEach(function(bt){bt.classList.remove('active');});
@@ -2294,7 +2294,7 @@ window.exportNdfToExcel=async function(){
     var blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');a.href=url;a.download='walth-sarl-ndf-'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(url);
-    showToast('Export Notes de Frais téléchargé ✓');
+    showToast('Export Notes de Frais téléchargé OK');
   } catch(e){ showToast('Erreur export'); console.error(e); }
 };
 
@@ -2309,20 +2309,20 @@ function renderCard(container,did,data,role){
   }
   var ex='';
   if(data.attachments&&data.attachments.length){
-    ex+='<div class="achl" style="margin-top:10px"><div style="font-size:11px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">📎 Pièces jointes ('+data.attachments.length+')</div>';
+    ex+='<div class="achl" style="margin-top:10px"><div style="font-size:11px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px"> Pièces jointes ('+data.attachments.length+')</div>';
     data.attachments.forEach(function(a){
-      var icon=a.type&&a.type.startsWith('image/')?'🖼':'📄';
+      var icon=a.type&&a.type.startsWith('image/')?'':'';
       ex+='<a class="ach" href="'+a.url+'" target="_blank" rel="noopener">'+icon+' '+esc(a.name)+'</a>';
     });
     ex+='</div>';
   }
   if(data.category) ex+='<div style="margin-top:8px;font-size:12px"><span style="color:var(--muted)">Catégorie : </span><span style="color:var(--amber)">'+esc(data.category)+'</span></div>';
   if(data.whatsappPhone) ex+='<div style="margin-top:4px;font-size:12px"><span style="color:var(--muted)">WhatsApp : </span><span style="font-family:var(--mono)">'+esc(data.whatsappPhone)+'</span></div>';
-  if(data.accounting_approver){ex+='<div class="app-block">✓ Approuvé compta. : <strong>'+esc(data.accounting_approver)+'</strong>';if(data.accounting_paymentMethod) ex+=' · <span class="pbadge">'+data.accounting_paymentMethod+'</span>';ex+='</div>';}
+  if(data.accounting_approver){ex+='<div class="app-block">OK Approuvé compta. : <strong>'+esc(data.accounting_approver)+'</strong>';if(data.accounting_paymentMethod) ex+=' · <span class="pbadge">'+data.accounting_paymentMethod+'</span>';ex+='</div>';}
   if(data.accounting_rejectionReason) ex+='<div class="rej-block">Rejeté compta. : '+esc(data.accounting_rejectionReason)+'</div>';
-  if(data.manager_approver) ex+='<div class="app-block">✓ Approuvé directeur : <strong>'+esc(data.manager_approver)+'</strong></div>';
+  if(data.manager_approver) ex+='<div class="app-block">OK Approuvé directeur : <strong>'+esc(data.manager_approver)+'</strong></div>';
   if(data.manager_rejectionReason) ex+='<div class="rej-block">Rejeté directeur : '+esc(data.manager_rejectionReason)+'</div>';
-  if(data.renduRegle) ex+='<div style="margin-top:8px;padding:8px 12px;background:var(--green-bg);border:1px solid rgba(39,174,96,0.3);border-radius:var(--radius);font-size:12px;color:var(--green)">✓ Remboursement réglé — Reçu par <strong>'+esc(data.renduReceivedBy||'—')+'</strong>'+(data.renduAt?' le '+fmtAuditDate(data.renduAt):'')+(data.renduNote?' — '+esc(data.renduNote):'')+'</div>';
+  if(data.renduRegle) ex+='<div style="margin-top:8px;padding:8px 12px;background:var(--green-bg);border:1px solid rgba(39,174,96,0.3);border-radius:var(--radius);font-size:12px;color:var(--green)">OK Remboursement réglé — Reçu par <strong>'+esc(data.renduReceivedBy||'—')+'</strong>'+(data.renduAt?' le '+fmtAuditDate(data.renduAt):'')+(data.renduNote?' — '+esc(data.renduNote):'')+'</div>';
   if(data.resubmissionNote) ex+='<div style="margin-top:8px;padding:8px 12px;background:#f5f0fa;border:1px solid #d7c9eb;border-radius:var(--radius);font-size:12px"><span style="color:#9b59b6;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.06em">Modifications v'+(data.versionNumber||'?')+' : </span><em>'+esc(data.resubmissionNote)+'</em></div>';
   var ri='';
   if(data.actualCost){
@@ -2337,14 +2337,14 @@ function renderCard(container,did,data,role){
       ri+='<div style="margin-top:6px;padding:8px 10px;background:#fff8e6;border:1px solid #f0a500;border-radius:var(--radius);font-size:12px;color:#7a5000">+ Décaissement supplémentaire accordé : <strong>'+fmtF(data.decaissSupplementaireAmount||0)+'</strong> ('+esc(data.decaissSupplementairePayment||'')+') — '+esc(data.decaissSupplementaireReason||'')+'</div>';
     }
     ri+='</div>';
-    if(data.receiptAttachments&&data.receiptAttachments.length){ri+='<div class="achl">';data.receiptAttachments.forEach(function(a){ri+='<a class="ach" href="'+a.url+'" target="_blank">'+(a.type&&a.type.startsWith('image/')?'🧾':'📄')+' '+esc(a.name)+'</a>';});ri+='</div>';}
+    if(data.receiptAttachments&&data.receiptAttachments.length){ri+='<div class="achl">';data.receiptAttachments.forEach(function(a){ri+='<a class="ach" href="'+a.url+'" target="_blank">'+(a.type&&a.type.startsWith('image/')?'':'')+' '+esc(a.name)+'</a>';});ri+='</div>';}
   }
   var ac='';
   var isUrg = data.urgent ? 'true' : 'false';
   if(role==='accounting'&&data.status==='pending'&&!data.urgent) {
     ac='<div style="display:flex;gap:8px;margin-top:14px"><button class="btn btn-r" onclick="openRejectModal(\'"+did+"\',\'"+esc(data.requesterName)+"\',\'accounting\')">Rejeter</button><button class="btn btn-a" onclick="openApproveModal(\'"+did+"\',\'"+esc(data.requesterName)+"\',\'accounting\',false)">Approuver</button></div>';
   } else if(role==='accounting'&&data.status==='pending'&&data.urgent) {
-    ac='<div style="margin-top:12px;padding:10px 12px;background:#fff8e6;border:1px solid #f0a500;border-radius:var(--radius);font-size:12px;color:#7a5000">⚡ Fiche urgente — Le Directeur peut approuver directement. Votre approbation est optionnelle.</div>'+
+    ac='<div style="margin-top:12px;padding:10px 12px;background:#fff8e6;border:1px solid #f0a500;border-radius:var(--radius);font-size:12px;color:#7a5000"> Fiche urgente — Le Directeur peut approuver directement. Votre approbation est optionnelle.</div>'+
        '<div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-r" onclick="openRejectModal(\'"+did+"\',\'"+esc(data.requesterName)+"\',\'accounting\')">Rejeter</button><button class="btn btn-a" onclick="openApproveModal(\'"+did+"\',\'"+esc(data.requesterName)+"\',\'accounting\',false)">Approuver quand même</button></div>';
   } else if(role==='manager'&&(data.status==='accounting_approved'||(data.status==='pending'&&data.urgent))) {
     ac='<div style="display:flex;gap:8px;margin-top:14px"><button class="btn btn-r" onclick="openRejectModal(\'"+did+"\',\'"+esc(data.requesterName)+"\',\'manager\')">Rejeter</button><button class="btn btn-a" onclick="openApproveModal(\'"+did+"\',\'"+esc(data.requesterName)+"\',\'manager\','+isUrg+')">Approuver</button></div>';
@@ -2355,16 +2355,16 @@ function renderCard(container,did,data,role){
   if(isCash&&(role==='accounting'||role==='admin') && (data.status==='manager_approved'||data.status==='receipt_uploaded'||data.status==='accounting_approved')) {
     var checked=data.cahierPhysique?'checked':'';
     var cahierLabel=data.cahierPhysique?
-      '<span style="color:var(--green);font-size:12px">✓ Reporté dans le cahier le '+fmtAuditDate(data.cahierPhysiqueAt)+'</span>':
+      '<span style="color:var(--green);font-size:12px">OK Reporté dans le cahier le '+fmtAuditDate(data.cahierPhysiqueAt)+'</span>':
       '<span style="font-size:12px;color:var(--muted)">Non reporté dans le cahier</span>';
     cahier='<div style="display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 12px;background:#faf8f5;border:1px solid var(--border);border-radius:var(--radius)">'+
       '<input type="checkbox" id="cahier-'+did+'" '+checked+(data.cahierPhysique?' disabled':'')+' onchange="toggleCahier(\''+did+'\',this)" style="width:18px;height:18px;cursor:pointer;accent-color:var(--green)">'+
-      '<label for="cahier-'+did+'" style="font-size:13px;cursor:pointer;margin:0">📒 Reporté dans le cahier physique</label>'+
+      '<label for="cahier-'+did+'" style="font-size:13px;cursor:pointer;margin:0"> Reporté dans le cahier physique</label>'+
       '<div style="margin-left:auto">'+cahierLabel+'</div></div>';
   }
   card.innerHTML=
-    (data.urgent?'<div class="urgent-header">🚨 URGENT — Attention immédiate requise</div>':'')+
-    '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:8px"><div><div style="font-size:13px;font-weight:600">'+esc(data.requesterName)+'</div><div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:3px">#'+data.code+' · '+ds+'</div></div><div>'+getB(data.status)+(data.urgent?' <span class="urgent-badge">🚨 URGENT</span>':'')+'</div></div>'+
+    (data.urgent?'<div class="urgent-header">URGENT - URGENT — Attention immédiate requise</div>':'')+
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:8px"><div><div style="font-size:13px;font-weight:600">'+esc(data.requesterName)+'</div><div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:3px">#'+data.code+' · '+ds+'</div></div><div>'+getB(data.status)+(data.urgent?' <span class="urgent-badge">URGENT - URGENT</span>':'')+'</div></div>'+
     (data.description?'<div style="font-size:13px;color:var(--muted);margin-bottom:8px;line-height:1.5">'+esc(data.description)+'</div>':'')+ih+ex+ri+ac+cahier;
   if(data.urgent) card.classList.add('urgent-card');
   // Load audit log for admin role
@@ -2383,7 +2383,7 @@ window.openApproveModal=function(did,rn,role,isUrgentFlag){
   var isUrgentDirect = role==='manager' && isUrgentFlag;
   window._ca={role:role,docId:did,isUrgentDirect:isUrgentDirect};
   document.getElementById('approve-modal-title').textContent=
-    isUrgentDirect?'🚨 Approbation Urgente — Directeur':
+    isUrgentDirect?'URGENT - Approbation Urgente — Directeur':
     role==='accounting'?'Approbation Comptabilité':'Approbation Directeur';
   document.getElementById('approve-request-summary').textContent='Fiche de '+rn;
   populateApproverDropdown('approver-name-input', role);
@@ -2429,9 +2429,9 @@ window.confirmApprove=async function(){
     if(role==='accounting'){
       var reqSnap=await getDoc(doc(db,"requests",did));
       var reqData=reqSnap.data();
-      sendPushToRole('manager','✅ Approbation requise',(reqData.requesterName||'')+' — '+fmtF(reqData.estimatedCost||0),{type:'accounting_approved',code:reqData.code||''});
+      sendPushToRole('manager',' Approbation requise',(reqData.requesterName||'')+' — '+fmtF(reqData.estimatedCost||0),{type:'accounting_approved',code:reqData.code||''});
     }
-    closeModal('approve-modal');showToast('Fiche approuvée ✓');
+    closeModal('approve-modal');showToast('Fiche approuvée OK');
     if(role==='accounting') loadA(); else loadM();
   }catch(e){showToast('Erreur lors de l\'enregistrement');console.error(e);}
   btn.disabled=false;btn.innerHTML='Confirmer';
@@ -2500,7 +2500,7 @@ async function showResubmitView(data, docId){
   document.getElementById('resub-fiche-subtitle').textContent='Fiche #'+data.code+' — '+data.requesterName;
   document.getElementById('resub-change-desc').value='';
   // Show rejection banner
-  var banner='<div class="resub-banner"><div class="resub-banner-title">✗ Rejeté par '+rejectedBy+(rejector?' — '+rejector:'')+'</div>';
+  var banner='<div class="resub-banner"><div class="resub-banner-title"> Rejeté par '+rejectedBy+(rejector?' — '+rejector:'')+'</div>';
   if(rejReason) banner+='<div class="resub-reason">Raison du rejet : <strong>'+esc(rejReason)+'</strong></div>';
   else banner+='<div class="resub-reason" style="color:var(--muted)">Aucun motif précisé</div>';
   banner+='</div>';
@@ -2578,8 +2578,8 @@ window.updateDiff=function(){
   var est=_crr.estimatedCost||0,df=est-act;
   var el=document.getElementById('diff-display');
   if(act<=0){el.innerHTML='';return;}
-  if(df>0) el.innerHTML='<div class="diff-box retour">✓ À rendre à la caisse : <strong style="font-family:var(--mono)">'+fmtF(df)+'</strong></div>';
-  else if(df<0) el.innerHTML='<div class="diff-box dep">⚠ Dépassement : <strong style="font-family:var(--mono)">'+fmtF(Math.abs(df))+'</strong></div>';
+  if(df>0) el.innerHTML='<div class="diff-box retour">OK À rendre à la caisse : <strong style="font-family:var(--mono)">'+fmtF(df)+'</strong></div>';
+  else if(df<0) el.innerHTML='<div class="diff-box dep"> Dépassement : <strong style="font-family:var(--mono)">'+fmtF(Math.abs(df))+'</strong></div>';
   else el.innerHTML='<div class="diff-box exact">Montant exact — aucun remboursement nécessaire</div>';
 };
 window.submitReceipt=async function(){
@@ -2592,8 +2592,8 @@ window.submitReceipt=async function(){
     await addAuditLog(req.id, 'recu_depose', req.requesterName, 'Montant réel : '+fmtF(act)+(df>0?' — À rendre : '+fmtF(df):df<0?' — Dépassement : '+fmtF(Math.abs(df)):''));
     document.getElementById('receipt-upload-view').style.display='none';document.getElementById('receipt-success-view').style.display='block';
     var sm='<strong style="color:var(--text)">Fiche #'+req.code+'</strong><br>Montant estimé : '+fmtF(req.estimatedCost)+'<br>Montant réel : '+fmtF(act)+'<br><br>';
-    if(df>0) sm+='<span style="color:var(--green)">✓ À rendre à la caisse : <strong>'+fmtF(df)+'</strong></span>';
-    else if(df<0) sm+='<span style="color:var(--red)">⚠ Dépassement : <strong>'+fmtF(Math.abs(df))+'</strong></span>';
+    if(df>0) sm+='<span style="color:var(--green)">OK À rendre à la caisse : <strong>'+fmtF(df)+'</strong></span>';
+    else if(df<0) sm+='<span style="color:var(--red)"> Dépassement : <strong>'+fmtF(Math.abs(df))+'</strong></span>';
     else sm+='<span style="color:var(--muted)">Montant exact</span>';
     document.getElementById('receipt-success-summary').innerHTML=sm;
   }catch(e){showToast('Erreur lors de la soumission.');console.error(e);btn.disabled=false;btn.innerHTML='Soumettre le Reçu';}
@@ -2649,7 +2649,7 @@ window.loadAuditTab=async function(){
     if(!el.children.length) el.innerHTML='<div class="empty-state">Aucun historique d\'action disponible</div>';
   }catch(e){el.innerHTML='<div class="empty-state">Erreur de chargement</div>';console.error(e);}
 };
-// ── RENDU MONNAIE ─────────────────────────────────────────
+//  RENDU MONNAIE 
 window.openRenduModal=function(did, requesterName, code, amount, type){
   document.getElementById('rendu-doc-id').value=did;
   document.getElementById('rendu-amount').value=amount;
@@ -2677,8 +2677,8 @@ window.updateRenduDiff=function(){
   var expected=Math.abs(req.reimbursementAmount||0);
   var diff=amt-expected;
   var el=document.getElementById('rendu-diff-display');
-  if(diff===0) el.innerHTML='<div class="diff-box exact" style="margin-top:8px">Montant exact ✓</div>';
-  else if(diff<0) el.innerHTML='<div class="diff-box dep" style="margin-top:8px">⚠ Manque : '+fmtF(Math.abs(diff))+'</div>';
+  if(diff===0) el.innerHTML='<div class="diff-box exact" style="margin-top:8px">Montant exact OK</div>';
+  else if(diff<0) el.innerHTML='<div class="diff-box dep" style="margin-top:8px"> Manque : '+fmtF(Math.abs(diff))+'</div>';
   else el.innerHTML='<div class="diff-box retour" style="margin-top:8px">Excédent : '+fmtF(diff)+'</div>';
 };
 
@@ -2701,13 +2701,13 @@ window.confirmRendu=async function(){
     });
     await addAuditLog(did,'rendu_regle',receiver,'Montant reçu : '+fmtF(amt)+(note?' — '+note:''));
     closeModal('rendu-modal');
-    showToast('✓ Remboursement enregistré');
+    showToast('OK Remboursement enregistré');
     // Refresh rapports data
     await loadR();
   }catch(e){showToast('Erreur lors de l\'enregistrement');console.error(e);}
-  btn.disabled=false;btn.innerHTML='✓ Confirmer la réception';
+  btn.disabled=false;btn.innerHTML='OK Confirmer la réception';
 };
-// ────────────────────────────────────────────────────────────
+// 
 window.toggleCahier=async function(did, cb){
   if(!cb.checked) return;
   cb.disabled=true;
@@ -2717,10 +2717,10 @@ window.toggleCahier=async function(did, cb){
       cahierPhysiqueAt:serverTimestamp()
     });
     await addAuditLog(did,'cahier_physique','Admin','Reporté dans le cahier physique');
-    showToast('✓ Enregistré dans le cahier physique');
+    showToast('OK Enregistré dans le cahier physique');
     // Update label without reloading
     var lbl=cb.parentElement.querySelector('div:last-child');
-    if(lbl) lbl.innerHTML='<span style="color:var(--green);font-size:12px">✓ Reporté dans le cahier</span>';
+    if(lbl) lbl.innerHTML='<span style="color:var(--green);font-size:12px">OK Reporté dans le cahier</span>';
   }catch(e){showToast('Erreur lors de l\'enregistrement');cb.disabled=false;cb.checked=false;console.error(e);}
 };
 function getB(status){
