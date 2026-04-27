@@ -901,6 +901,81 @@
 </div>
 <div id="toast"></div>
 
+<script>
+// Pre-declare all global functions as stubs
+// These get replaced by the ES module once it loads
+var _moduleReady = false;
+var _pendingCall = null;
+function _stub(name) {
+  return function() {
+    if (!_moduleReady) {
+      showToast && showToast('Chargement en cours...');
+      console.log('Module not ready yet, function:', name);
+    }
+  };
+}
+window.openApproveModal = _stub('openApproveModal');
+window.openRejectModal = _stub('openRejectModal');
+window.confirmApprove = _stub('confirmApprove');
+window.confirmReject = _stub('confirmReject');
+window.showScreen = _stub('showScreen');
+window.tryDash = _stub('tryDash');
+window.lockDash = _stub('lockDash');
+window.submitRequest = _stub('submitRequest');
+window.filterResults = _stub('filterResults');
+window.exportToExcel = _stub('exportToExcel');
+window.switchTab = _stub('switchTab');
+window.switchAdminTab = _stub('switchAdminTab');
+window.switchMgrTab = _stub('switchMgrTab');
+window.closeModal = _stub('closeModal');
+window.addItem = _stub('addItem');
+window.removeItem = _stub('removeItem');
+window.lookupCode = _stub('lookupCode');
+window.submitReceipt = _stub('submitReceipt');
+window.submitNote = _stub('submitNote');
+window.toggleUrgent = _stub('toggleUrgent');
+window.openRenduModal = _stub('openRenduModal');
+window.confirmRendu = _stub('confirmRendu');
+window.setAdminFilter = _stub('setAdminFilter');
+window.setNdfFilter = _stub('setNdfFilter');
+window.loadAdminNdf = _stub('loadAdminNdf');
+window.loadMgrHistory = _stub('loadMgrHistory');
+window.loadMgrCahier = _stub('loadMgrCahier');
+window.markMgrCahier = _stub('markMgrCahier');
+window.mgrCalSelect = _stub('mgrCalSelect');
+window.mgrCalPrev = _stub('mgrCalPrev');
+window.mgrCalNext = _stub('mgrCalNext');
+window.cahierCalSelect = _stub('cahierCalSelect');
+window.cahierCalPrev = _stub('cahierCalPrev');
+window.cahierCalNext = _stub('cahierCalNext');
+window.addApprover = _stub('addApprover');
+window.removeApprover = _stub('removeApprover');
+window.addWhatsappNumber = _stub('addWhatsappNumber');
+window.removeWaNumber = _stub('removeWaNumber');
+window.openChangePinModal = _stub('openChangePinModal');
+window.confirmChangePin = _stub('confirmChangePin');
+window.requestNotifPermission = _stub('requestNotifPermission');
+window.dismissNotifModal = _stub('dismissNotifModal');
+window.approveNdf = _stub('approveNdf');
+window.rejectNdf = _stub('rejectNdf');
+window.resetSubmitForm = _stub('resetSubmitForm');
+window.resetReceiptForm = _stub('resetReceiptForm');
+window.resetNoteForm = _stub('resetNoteForm');
+window.updateDiff = _stub('updateDiff');
+window.toggleCahier = _stub('toggleCahier');
+window.submitResubmission = _stub('submitResubmission');
+window.openDecaissModal = _stub('openDecaissModal');
+window.confirmDecaiss = _stub('confirmDecaiss');
+window.setMgrHistoryFilter = _stub('setMgrHistoryFilter');
+window.onPaymentMethodChange = _stub('onPaymentMethodChange');
+window.addSplitRow = _stub('addSplitRow');
+window.updateSplitTotal = _stub('updateSplitTotal');
+window.handleFiles = _stub('handleFiles');
+window.removeFile = _stub('removeFile');
+window.handleNoteFiles = _stub('handleNoteFiles');
+window.removeNoteFile = _stub('removeNoteFile');
+window.loadAuditTab = _stub('loadAuditTab');
+</script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore,collection,collectionGroup,doc,getDoc,getDocs,addDoc,updateDoc,query,where,orderBy,serverTimestamp,setDoc,runTransaction,Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -2738,8 +2813,8 @@ document.querySelectorAll('.modal-overlay').forEach(function(el){
 </script>
 <!-- PWA SERVICE WORKER - Disabled temporarily -->
 <script>
-// Service worker disabled - notifications configured separately
-console.log('WALTH SARL app loaded');
+_moduleReady = true;
+console.log('WALTH SARL module ready');
 </script>
 </body>
 </html>
