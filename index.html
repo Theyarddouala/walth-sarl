@@ -902,6 +902,9 @@
 <div id="toast"></div>
 
 <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore,collection,collectionGroup,doc,getDoc,getDocs,addDoc,updateDoc,query,where,orderBy,serverTimestamp,setDoc,runTransaction,Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 const FC = {
   apiKey:"AIzaSyDVF_INK63-0XrV5qljqessHeOOQc8afeQ",
   authDomain:"the-yard-caf6f.firebaseapp.com",
@@ -911,9 +914,6 @@ const FC = {
   appId:"1:580422335751:web:7f1c6a26b0f966262099a2"
 };
 const VAPID_KEY = "BI4z6RZGewkDJpktO0te9vOCWbgqoiIz0tz4VPPfzbLjmH_MIKlI3UeRV9JuLjZ2vy2sy6F0EdFcx7w9C18XKMk";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore,collection,collectionGroup,doc,getDoc,getDocs,addDoc,updateDoc,query,where,orderBy,serverTimestamp,setDoc,runTransaction,Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 const app = initializeApp(FC);
 const db = getFirestore(app);
 const storage = getStorage(app);
