@@ -1,0 +1,10 @@
+[[headers]]
+  for = "/firebase-messaging-sw.js"
+  [headers.values]
+    Content-Type = "application/javascript"
+    Cache-Control = "no-store, no-cache, must-revalidate"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-store, no-cache, must-revalidate"
