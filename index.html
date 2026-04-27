@@ -911,13 +911,6 @@ const FC = {
   appId:"1:580422335751:web:7f1c6a26b0f966262099a2"
 };
 const VAPID_KEY = "BI4z6RZGewkDJpktO0te9vOCWbgqoiIz0tz4VPPfzbLjmH_MIKlI3UeRV9JuLjZ2vy2sy6F0EdFcx7w9C18XKMk";
-const SA = {
-  type:"service_account",project_id:"the-yard-caf6f",
-  private_key_id:"f408e9262bb0ef3ba6ac7977b81aeb1abc88cbcd",
-  private_key:"-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDHQhHqmXwWAlZi\ngsmV+3XjVMidAboZD42QZcBmlHb6qBLG83Qs4UQV5CVDSVIhR0oX6+jm6UOWbKiM\nFciuT4nXVKI4+WGmcmX/91BV+haxS/xKZIauDM2NdX6sKrnPt5A6f2Vw+nBtS8rq\n1IOTOt8gIKlmquQvcll2E8A3iptjqbevPscE+olsvz6tuB72A5BPuwLe2diQNnkU\nOJ9H/slDEMGxtNI1hj8WG0+b/vdD5rNWu2nyAbkCFkqoijeiXK275I2G+Vo/ETfZ\nZallpsr0V/cJ4T3ilxg2Rf+1seYlrX0msy0FrCny5GfKi7p0gmMlBT6cSgKbJF20\nNrHEAJC1AgMBAAECggEAEot8JmT1jwjVqGJ6x4o5TRiheTdlbhqr9sH5l7J+plKJ\nONoEuH6Yux7aNvp2eeFsLHDI4uDX6QKg5zTJ0itV7WQTmxDevUKNarbGU9IsVYD4\ncKYNgNpxMRa73OM3GvV/J2qe8tZkK0/wCU4RFt1WUeOoUIVcKmxOljY9YA32614A\nycid2KR5gOcR2VEJj8rVZQ4SQRW6BM2YEW7CCow/qp4flM3KYX6/NvvYOjoaG39g\nlz4IcldRlqXm8Mrt1DwcE/EYtpCa03dXZq/BVAIiVNMX8fbTN4lo8ZbgIkaA4cNX\nep0jpBRNPE0zz4l9x/4P00iolLBHbAT+YR1s0u7yuwKBgQDpWXHysycYVIdZEqB/\nrx3yj4lCmqBIt4vF3KjfldBSRtPyrCIkb1eVzGl55dUT+TuEoCsF6wV1jifTTQj6\nvP9H0bo+OHknbVSabrS6TxTZX8GlMKIOyJolUpr7/Rzu2rQcKEAuBS/qovzBFBsD\nNd1zRrq/q8NHcw7jYefGiDvC/wKBgQDamXtWgHEekIDPczmU4BgeuzOFlcDvE5a/\nmOYVYyN6/8Wail+dHuyBuIljIPGyM+vVpXoN7gXQlKCF5GBpZiIktg0nmHtQQjtp\n8Eb1GZKUeGLU1ivuzusR8pifPKhkTOqYVYiJjw/jCQpAVhAgwnWviKaLDfQfeZLO\ncndMFjGQSwKBgG4oNWyXOkt4C/T2oCHmr0KElA2HJUdurmMXifkSpidRHFkg/XUp\nwrUKrHhJEU++hmRToDvI+OjH1PEhGq4Tboee8EbTLg54xEmrHVIeZv8+/xFWZgqI\nlIwt9NAkavYu9HueXL3c4QPpMVyMezwGv6Xdq+cz1Jn0LQEWhO3p/hxNAoGBAMPN\nIkrS9X/ZE2e939/X8gLkzztibdQ3iZnIjJ6vlEJCA29vbkFAR7vR3U2rXpKuKxnN\nBMyhXRf9aONFMo516zNS1emXjSzQhoNXs1crNr5CLtRRmjxnnusOj2JiZLqioqcc\nRhZgzGwh1srVy9BsHhnCntqC/x2KOdMteGnwnyiNAoGBAIHb0NxVAaiUR+aXuxvD\nGUAwm2WLB43mfVBojnvmKsu+66tTgFqKqtR2b8KOopD/N/Y9aLGiRaaypS0eVThi\nrG8JK2OnbqO2FLM0wxglK314FI3nAMLnDqRX+t2ND1GY6Slya5uzTh0E4V8CiGUp\nUPgBL01IRMUfgkhXaTZFlFss\n-----END PRIVATE KEY-----\n",
-  client_email:"firebase-adminsdk-fbsvc@the-yard-caf6f.iam.gserviceaccount.com",
-  token_uri:"https://oauth2.googleapis.com/token"
-};
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore,collection,collectionGroup,doc,getDoc,getDocs,addDoc,updateDoc,query,where,orderBy,serverTimestamp,setDoc,runTransaction,Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
@@ -982,55 +975,9 @@ async function requestNotifPermission() {
   dismissNotifModal();
 }
 
-async function getOAuthToken() {
-  // Generate JWT for service account to get OAuth2 access token
-  try {
-    var now = Math.floor(Date.now()/1000);
-    var header = btoa(JSON.stringify({alg:'RS256',typ:'JWT'})).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
-    var claim = btoa(JSON.stringify({
-      iss: SA.client_email,
-      scope: 'https://www.googleapis.com/auth/firebase.messaging',
-      aud: SA.token_uri,
-      exp: now+3600, iat: now
-    })).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
-    var unsigned = header+'.'+claim;
-    // Import private key
-    var pemBody = SA.private_key.replace(/-----BEGIN PRIVATE KEY-----|-----END PRIVATE KEY-----|\n/g,'');
-    var binaryDer = Uint8Array.from(atob(pemBody), c=>c.charCodeAt(0));
-    var cryptoKey = await crypto.subtle.importKey('pkcs8', binaryDer.buffer,
-      {name:'RSASSA-PKCS1-v1_5', hash:'SHA-256'}, false, ['sign']);
-    var sig = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', cryptoKey,
-      new TextEncoder().encode(unsigned));
-    var sigB64 = btoa(String.fromCharCode(...new Uint8Array(sig))).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
-    var jwt = unsigned+'.'+sigB64;
-    // Exchange JWT for access token
-    var resp = await fetch(SA.token_uri, {
-      method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'},
-      body:'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion='+jwt
-    });
-    var data = await resp.json();
-    return data.access_token;
-  } catch(e) { console.error('OAuth error:', e); return null; }
-}
-
+async function getOAuthToken() { return null; }
 async function sendPushToRole(role, title, body, data) {
-  try {
-    var s = await getDocs(query(collection(db,'fcmTokens'), where('role','==',role)));
-    if(s.empty) return;
-    var accessToken = await getOAuthToken();
-    if(!accessToken) return;
-    var tokens = [];
-    s.forEach(function(d){ tokens.push(d.data().token); });
-    for(var token of tokens) {
-      try {
-        await fetch('https://fcm.googleapis.com/v1/projects/the-yard-caf6f/messages:send', {
-          method:'POST',
-          headers:{'Authorization':'Bearer '+accessToken,'Content-Type':'application/json'},
-          body: JSON.stringify({message:{token:token,notification:{title:title,body:body},data:data||{}}})
-        });
-      } catch(e) { console.error('Send error for token:', e); }
-    }
-  } catch(e) { console.error('sendPushToRole error (non-blocking):', e); }
+  console.log('Push notification (disabled):', role, title);
 }
 
 function initNotifications() {
